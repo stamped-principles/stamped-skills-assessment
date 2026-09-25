@@ -1,0 +1,16 @@
+[workspace]
+name = "stamped-skills-assessment"
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64"]
+
+[dependencies]
+python = "3.12.*"
+
+[pypi-dependencies]
+stamped-assessment = {path = ".", editable = true, extras = ["dev"]}
+
+[tasks]
+generate = "python tools/generate.py"
+validate = "stamped-assess validate records"
+test = "pytest -q"
+review = "stamped-assess review-queue records"

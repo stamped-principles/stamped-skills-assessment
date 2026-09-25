@@ -1,0 +1,118 @@
+id: paper-handoff-v0.1.0
+record_type: rubric
+schema_version: 0.1.0
+use_case: paper-authoring
+version: 0.1.0
+reference_bundle: stamped-2026-09-25
+decided_by: assessor
+decision_rationale: Initial calibration rubric inferred from the manuscript handoff objective. Priorities
+  are provisional and unreviewed.
+principles:
+- category: self_contained
+  priority: essential
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. All build inputs are recoverable
+    from this snapshot.
+- category: tracked
+  priority: essential
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. The source revision and
+    generated-file procedures are identifiable.
+- category: actionable
+  priority: essential
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. Instructions identify the
+    build command and required inputs.
+- category: modular
+  priority: important
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. Author metadata and its
+    renderer have a distinct build target.
+- category: portable
+  priority: important
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. A recipient can identify
+    required host tooling.
+- category: ephemeral
+  priority: supporting
+  direction: balance
+  rationale: Selected by assessor for this pilot; requires human calibration. Durable manuscript preservation
+    and disposable execution concern different components.
+- category: distributable
+  priority: essential
+  direction: maximize
+  rationale: Selected by assessor for this pilot; requires human calibration. Essential bytes and their
+    license declarations can be obtained.
+criteria:
+- id: paper-self_contained
+  category: self_contained
+  question: Can the build inputs be recovered from the declared boundary?
+  target: All build inputs are recoverable from this snapshot.
+  checklist_items:
+  - stamped-checklist:must/002
+  required_activities:
+  - inspect
+  - retrieve
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-tracked
+  category: tracked
+  question: Can a reviewer identify source versions and generating procedures?
+  target: The source revision and generated-file procedures are identifiable.
+  checklist_items:
+  - stamped-checklist:must/004
+  required_activities:
+  - inspect
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-actionable
+  category: actionable
+  question: Can a collaborator follow the declared build interface?
+  target: Instructions identify the build command and required inputs.
+  checklist_items:
+  - stamped-checklist:must/007
+  required_activities:
+  - inspect
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-modular
+  category: modular
+  question: Can author metadata rendering be inspected independently?
+  target: Author metadata and its renderer have a distinct build target.
+  checklist_items:
+  - stamped-checklist:should/003
+  required_activities:
+  - inspect
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-portable
+  category: portable
+  question: Are host requirements explicit for the declared build?
+  target: A recipient can identify required host tooling.
+  checklist_items:
+  - stamped-checklist:must/011
+  required_activities:
+  - inspect
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-ephemeral
+  category: ephemeral
+  question: Is disposable execution distinguished from durable manuscript sources?
+  target: Build environment can be recreated while source and authorship records remain durable.
+  checklist_items:
+  - stamped-checklist:should/004
+  required_activities:
+  - inspect
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.
+- id: paper-distributable
+  category: distributable
+  question: Can a recipient retrieve the exact essential components?
+  target: Essential bytes and their license declarations can be obtained.
+  checklist_items:
+  - stamped-checklist:must/016
+  required_activities:
+  - inspect
+  - retrieve
+  rationale: A narrow observable criterion for the manuscript handoff use case; not full coverage of this
+    principle.

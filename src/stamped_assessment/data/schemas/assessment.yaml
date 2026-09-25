@@ -1,0 +1,491 @@
+id: https://stamped-principles.org/assessment
+name: stamped_assessment
+version: 0.1.0
+description: Use-case-specific STAMPED assessments with explicit scope, evidence,
+  and independent review.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  assessment: https://stamped-principles.org/assessment/
+  xsd: http://www.w3.org/2001/XMLSchema#
+default_prefix: assessment
+imports:
+- linkml:types
+- ../upstream/principles/stamped-principles-schema
+enums:
+  Priority:
+    permissible_values:
+      essential: null
+      important: null
+      supporting: null
+      out_of_scope: null
+  Direction:
+    permissible_values:
+      maximize: null
+      balance: null
+      preserve: null
+  Activity:
+    permissible_values:
+      inspect: null
+      resolve: null
+      retrieve: null
+      construct: null
+      execute: null
+      compare: null
+      independent_reproduce: null
+  ObservationStatus:
+    permissible_values:
+      completed: null
+      blocked: null
+      not_attempted: null
+  JudgmentStatus:
+    permissible_values:
+      demonstrated: null
+      partial: null
+      not_demonstrated: null
+      unknown: null
+      not_applicable: null
+  ActorKind:
+    permissible_values:
+      human: null
+      agent: null
+      tool: null
+  Origin:
+    permissible_values:
+      user: null
+      assessor: null
+      jointly: null
+  RecordStatus:
+    permissible_values:
+      in_progress: null
+      finalized: null
+  Disposition:
+    permissible_values:
+      agree: null
+      disagree: null
+      needs_evidence: null
+  Assistance:
+    permissible_values:
+      autonomous: null
+      available: null
+      collaborative: null
+  BarrierKind:
+    permissible_values:
+      access: null
+      unavailable_resource: null
+      compute: null
+      time: null
+      environment: null
+      ambiguous_instructions: null
+      other: null
+classes:
+  Source:
+    description: Recoverable source identity; revision or digest required by semantic
+      validation.
+    attributes:
+      url:
+        range: string
+        required: true
+      revision:
+        range: string
+        description: Full Git commit hash; use sha256 for other snapshot mechanisms.
+      sha256:
+        range: string
+        pattern: ^[a-f0-9]{64}$
+      path:
+        range: string
+      role:
+        range: string
+        required: true
+  Actor:
+    description: Claimed identity. Human identity needs a trusted review/publication
+      process.
+    attributes:
+      name:
+        range: string
+        required: true
+      kind:
+        range: ActorKind
+        required: true
+      model:
+        range: string
+      runtime:
+        range: string
+      skill:
+        range: Source
+      instructions:
+        range: string
+        description: Retained task instructions or a stable reference. Avoid secrets.
+  UseCase:
+    description: The intended use and audience; separate from any specific artifact
+      revision.
+    attributes:
+      id:
+        range: string
+        required: true
+      record_type:
+        range: string
+        required: true
+        equals_string: use_case
+      schema_version:
+        range: string
+        required: true
+        equals_string: 0.1.0
+      title:
+        range: string
+        required: true
+      objective:
+        range: string
+        required: true
+      audience:
+        range: string
+        required: true
+      description:
+        range: string
+        required: true
+  ObjectRecord:
+    description: An assessed object snapshot with a declared boundary.
+    attributes:
+      id:
+        range: string
+        required: true
+      record_type:
+        range: string
+        required: true
+        equals_string: object
+      schema_version:
+        range: string
+        required: true
+        equals_string: 0.1.0
+      use_case:
+        range: string
+        required: true
+      title:
+        range: string
+        required: true
+      kind:
+        range: string
+        required: true
+      boundary:
+        range: string
+        required: true
+      sources:
+        range: Source
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      components:
+        range: string
+        multivalued: true
+        inlined_as_list: true
+      captured_at:
+        range: datetime
+        required: true
+  PrincipleAim:
+    description: Use-case priorities do not change normative STAMPED requirements.
+    attributes:
+      category:
+        range: PrincipleCategory
+        required: true
+      priority:
+        range: Priority
+        required: true
+      direction:
+        range: Direction
+        required: true
+      rationale:
+        range: string
+        required: true
+  Criterion:
+    description: Observable use-case criterion, optionally mapped to canonical checklist
+      items.
+    attributes:
+      id:
+        range: string
+        required: true
+      category:
+        range: PrincipleCategory
+        required: true
+      question:
+        range: string
+        required: true
+      target:
+        range: string
+        required: true
+      checklist_items:
+        range: string
+        multivalued: true
+        inlined_as_list: true
+      required_activities:
+        range: Activity
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      rationale:
+        range: string
+        required: true
+  Rubric:
+    description: Versioned goals and observable criteria; checklist is a guide, not
+      exhaustive.
+    attributes:
+      id:
+        range: string
+        required: true
+      record_type:
+        range: string
+        required: true
+        equals_string: rubric
+      schema_version:
+        range: string
+        required: true
+        equals_string: 0.1.0
+      use_case:
+        range: string
+        required: true
+      version:
+        range: string
+        required: true
+      reference_bundle:
+        range: string
+        required: true
+      decided_by:
+        range: Origin
+        required: true
+      decision_rationale:
+        range: string
+        required: true
+      principles:
+        range: PrincipleAim
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      criteria:
+        range: Criterion
+        required: true
+        multivalued: true
+        inlined_as_list: true
+  AssessmentConditions:
+    description: Resources and authorization available, separately from comprehensiveness.
+    attributes:
+      assistance:
+        range: Assistance
+        required: true
+      allowed_actions:
+        range: string
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      limits:
+        range: string
+        required: true
+      access_context:
+        range: string
+        required: true
+      environment:
+        range: string
+        required: true
+  PlannedCheck:
+    description: Chosen activities for a criterion. Required rubric activities must
+      be included.
+    attributes:
+      criterion:
+        range: string
+        required: true
+      activities:
+        range: Activity
+        required: true
+        multivalued: true
+        inlined_as_list: true
+  Evidence:
+    description: Inspectable evidence supporting an observation, not an instruction
+      to execute.
+    attributes:
+      uri:
+        range: string
+        required: true
+      description:
+        range: string
+        required: true
+      sha256:
+        range: string
+        pattern: ^[a-f0-9]{64}$
+  Barrier:
+    description: Why an activity was blocked; this does not imply a universal artifact
+      failure.
+    attributes:
+      kind:
+        range: BarrierKind
+        required: true
+      detail:
+        range: string
+        required: true
+      next_action:
+        range: string
+        required: true
+      user_help_needed:
+        range: boolean
+        required: true
+  Observation:
+    description: What happened for one activity; completed need not mean a successful
+      result.
+    attributes:
+      id:
+        range: string
+        required: true
+      criterion:
+        range: string
+        required: true
+      activity:
+        range: Activity
+        required: true
+      status:
+        range: ObservationStatus
+        required: true
+      description:
+        range: string
+        required: true
+      evidence:
+        range: Evidence
+        multivalued: true
+        inlined_as_list: true
+      barrier:
+        range: Barrier
+      elapsed_seconds:
+        range: float
+        minimum_value: 0
+      compute_description:
+        range: string
+  Judgment:
+    description: Evidence-bounded conclusion about a criterion.
+    attributes:
+      criterion:
+        range: string
+        required: true
+      status:
+        range: JudgmentStatus
+        required: true
+      rationale:
+        range: string
+        required: true
+      observations:
+        range: string
+        required: true
+        multivalued: true
+        inlined_as_list: true
+  PrincipleSummary:
+    description: Interpretation for one principle in the stated use case.
+    attributes:
+      category:
+        range: PrincipleCategory
+        required: true
+      summary:
+        range: string
+        required: true
+  Assessment:
+    description: An assessor assertion, preserving scope and actual observations.
+    attributes:
+      id:
+        range: string
+        required: true
+      record_type:
+        range: string
+        required: true
+        equals_string: assessment
+      schema_version:
+        range: string
+        required: true
+        equals_string: 0.1.0
+      object:
+        range: string
+        required: true
+      rubric:
+        range: string
+        required: true
+      assessor:
+        range: Actor
+        required: true
+      started_at:
+        range: datetime
+      finished_at:
+        range: datetime
+      status:
+        range: RecordStatus
+        required: true
+      conditions:
+        range: AssessmentConditions
+        required: true
+      plan:
+        range: PlannedCheck
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      observations:
+        range: Observation
+        multivalued: true
+        inlined_as_list: true
+      judgments:
+        range: Judgment
+        multivalued: true
+        inlined_as_list: true
+      principle_summaries:
+        range: PrincipleSummary
+        multivalued: true
+        inlined_as_list: true
+      comparison_group:
+        range: string
+        description: Optional grouping only; does not establish experimental comparability.
+      intervention:
+        range: string
+        description: What changed between object versions, if known.
+      supersedes:
+        range: string
+      recorded_at:
+        range: datetime
+        required: true
+  ReviewDecision:
+    description: A judgment on a specific criterion; original assessment remains unchanged.
+    attributes:
+      criterion:
+        range: string
+        required: true
+      disposition:
+        range: Disposition
+        required: true
+      rationale:
+        range: string
+        required: true
+      suggested_status:
+        range: JudgmentStatus
+  Review:
+    description: Separate review tied to the exact semantic digest of an assessment.
+    attributes:
+      id:
+        range: string
+        required: true
+      record_type:
+        range: string
+        required: true
+        equals_string: review
+      schema_version:
+        range: string
+        required: true
+        equals_string: 0.1.0
+      assessment:
+        range: string
+        required: true
+      assessment_sha256:
+        range: string
+        required: true
+        pattern: ^[a-f0-9]{64}$
+      reviewer:
+        range: Actor
+        required: true
+      created_at:
+        range: datetime
+        required: true
+      decisions:
+        range: ReviewDecision
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      supersedes:
+        range: string

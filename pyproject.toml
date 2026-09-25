@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stamped-assessment"
+version = "0.1.0"
+description = "Versioned STAMPED assessment records, rubrics, and review tools"
+license = "MIT AND CC-BY-4.0"
+license-files = ["LICENSES/*.txt"]
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6,<7", "jsonschema>=4.23,<5"]
+
+[project.optional-dependencies]
+dev = ["linkml>=1.9,<2", "pytest>=8,<10", "build>=1,<2"]
+
+[project.scripts]
+stamped-assess = "stamped_assessment.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stamped_assessment"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

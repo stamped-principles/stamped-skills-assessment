@@ -1,0 +1,178 @@
+id: paper-inspection-20260925
+record_type: assessment
+schema_version: 0.1.0
+object: stamped-paper-67418b15d2d9
+rubric: paper-handoff-v0.1.0
+assessor:
+  name: Codex
+  kind: agent
+  model: unknown
+  instructions: Inspect the committed manuscript tree, README, Makefile, REUSE, and tracked build recipe.
+    Produce a narrow schema-calibration pilot; do not execute the manuscript build or infer retrieval
+    success.
+recorded_at: '2026-09-25T21:17:22.798091+00:00'
+finished_at: '2026-09-25T21:17:22.798091+00:00'
+status: finalized
+conditions:
+  assistance: autonomous
+  allowed_actions:
+  - Read local Git-tracked files and commit identity
+  limits: Initial inspection pilot; no build, retrieval, account creation, or substantial compute allocated.
+  access_context: Local checkout available. Public links retained as evidence locators, not proof of recipient
+    access.
+  environment: Existing macOS author workspace; no isolated reproduction environment.
+plan:
+- criterion: paper-self_contained
+  activities:
+  - inspect
+  - retrieve
+- criterion: paper-tracked
+  activities:
+  - inspect
+- criterion: paper-actionable
+  activities:
+  - inspect
+- criterion: paper-modular
+  activities:
+  - inspect
+- criterion: paper-portable
+  activities:
+  - inspect
+- criterion: paper-ephemeral
+  activities:
+  - inspect
+- criterion: paper-distributable
+  activities:
+  - inspect
+  - retrieve
+observations:
+- id: paper-self_contained-inspect
+  criterion: paper-self_contained
+  activity: inspect
+  status: completed
+  description: The tree identifies manuscript sources and annex-managed artifacts; retrieval was not attempted.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/README.md
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-self_contained-retrieve
+  criterion: paper-self_contained
+  activity: retrieve
+  status: not_attempted
+  description: Outside the resources allocated to this initial inspection pilot.
+- id: paper-tracked-inspect
+  criterion: paper-tracked
+  activity: inspect
+  status: completed
+  description: The commit identifies tracked source files and Makefile identifies several generating commands;
+    complete historical provenance was not inspected.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/Makefile
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-actionable-inspect
+  criterion: paper-actionable
+  activity: inspect
+  status: completed
+  description: The Makefile supplies build targets and README links contributing instructions; no build
+    was executed.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/Makefile
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-modular-inspect
+  criterion: paper-modular
+  activity: inspect
+  status: completed
+  description: Separate metadata files, renderers, and author targets are visible in the committed Makefile.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/Makefile
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-portable-inspect
+  criterion: paper-portable
+  activity: inspect
+  status: completed
+  description: The Makefile declares a Linux LaTeX.mk include and Python commands; compatibility on another
+    host was not exercised.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/Makefile
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-ephemeral-inspect
+  criterion: paper-ephemeral
+  activity: inspect
+  status: completed
+  description: A container recipe is tracked, but reconstruction and isolation from local state were not
+    attempted.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/containers/diff-pdf.Dockerfile
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-distributable-inspect
+  criterion: paper-distributable
+  activity: inspect
+  status: completed
+  description: README and REUSE describe licensing. Full retrieval, including annex content, was not attempted.
+  evidence:
+  - uri: https://github.com/stamped-principles/stamped-paper/blob/67418b15d2d9a81fc15cccbf48b07c1dc37f6c44/REUSE.toml
+    description: Inspected the corresponding committed file in the local checkout.
+- id: paper-distributable-retrieve
+  criterion: paper-distributable
+  activity: retrieve
+  status: not_attempted
+  description: Outside the resources allocated to this initial inspection pilot.
+judgments:
+- criterion: paper-self_contained
+  status: unknown
+  rationale: The tree identifies manuscript sources and annex-managed artifacts; retrieval was not attempted.
+  observations:
+  - paper-self_contained-inspect
+  - paper-self_contained-retrieve
+- criterion: paper-tracked
+  status: partial
+  rationale: The commit identifies tracked source files and Makefile identifies several generating commands;
+    complete historical provenance was not inspected.
+  observations:
+  - paper-tracked-inspect
+- criterion: paper-actionable
+  status: partial
+  rationale: The Makefile supplies build targets and README links contributing instructions; no build
+    was executed.
+  observations:
+  - paper-actionable-inspect
+- criterion: paper-modular
+  status: demonstrated
+  rationale: Separate metadata files, renderers, and author targets are visible in the committed Makefile.
+  observations:
+  - paper-modular-inspect
+- criterion: paper-portable
+  status: partial
+  rationale: The Makefile declares a Linux LaTeX.mk include and Python commands; compatibility on another
+    host was not exercised.
+  observations:
+  - paper-portable-inspect
+- criterion: paper-ephemeral
+  status: partial
+  rationale: A container recipe is tracked, but reconstruction and isolation from local state were not
+    attempted.
+  observations:
+  - paper-ephemeral-inspect
+- criterion: paper-distributable
+  status: unknown
+  rationale: README and REUSE describe licensing. Full retrieval, including annex content, was not attempted.
+  observations:
+  - paper-distributable-inspect
+  - paper-distributable-retrieve
+principle_summaries:
+- category: self_contained
+  summary: The tree identifies manuscript sources and annex-managed artifacts; retrieval was not attempted.
+- category: tracked
+  summary: The commit identifies tracked source files and Makefile identifies several generating commands;
+    complete historical provenance was not inspected.
+- category: actionable
+  summary: The Makefile supplies build targets and README links contributing instructions; no build was
+    executed.
+- category: modular
+  summary: Separate metadata files, renderers, and author targets are visible in the committed Makefile.
+- category: portable
+  summary: The Makefile declares a Linux LaTeX.mk include and Python commands; compatibility on another
+    host was not exercised.
+- category: ephemeral
+  summary: A container recipe is tracked, but reconstruction and isolation from local state were not attempted.
+- category: distributable
+  summary: README and REUSE describe licensing. Full retrieval, including annex content, was not attempted.

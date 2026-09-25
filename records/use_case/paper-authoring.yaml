@@ -1,0 +1,7 @@
+id: paper-authoring
+record_type: use_case
+schema_version: 0.1.0
+title: Review and rebuild a computational manuscript
+objective: Let collaborators inspect manuscript evidence and rebuild a cited revision.
+audience: Manuscript collaborators and readers
+description: Preserve the manuscript and its sources while making the build environment replaceable.

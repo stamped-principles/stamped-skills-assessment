@@ -1,0 +1,994 @@
+{
+    "$defs": {
+        "Activity": {
+            "description": "",
+            "enum": [
+                "inspect",
+                "resolve",
+                "retrieve",
+                "construct",
+                "execute",
+                "compare",
+                "independent_reproduce"
+            ],
+            "title": "Activity",
+            "type": "string"
+        },
+        "Actor": {
+            "additionalProperties": false,
+            "description": "Claimed identity. Human identity needs a trusted review/publication process.",
+            "properties": {
+                "instructions": {
+                    "description": "Retained task instructions or a stable reference. Avoid secrets.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "kind": {
+                    "$ref": "#/$defs/ActorKind"
+                },
+                "model": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "runtime": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "skill": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Source"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "name",
+                "kind"
+            ],
+            "title": "Actor",
+            "type": "object"
+        },
+        "ActorKind": {
+            "description": "",
+            "enum": [
+                "human",
+                "agent",
+                "tool"
+            ],
+            "title": "ActorKind",
+            "type": "string"
+        },
+        "Assessment": {
+            "additionalProperties": false,
+            "description": "An assessor assertion, preserving scope and actual observations.",
+            "properties": {
+                "assessor": {
+                    "$ref": "#/$defs/Actor"
+                },
+                "comparison_group": {
+                    "description": "Optional grouping only; does not establish experimental comparability.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "conditions": {
+                    "$ref": "#/$defs/AssessmentConditions"
+                },
+                "finished_at": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "intervention": {
+                    "description": "What changed between object versions, if known.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "judgments": {
+                    "items": {
+                        "$ref": "#/$defs/Judgment"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "object": {
+                    "type": "string"
+                },
+                "observations": {
+                    "items": {
+                        "$ref": "#/$defs/Observation"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "plan": {
+                    "items": {
+                        "$ref": "#/$defs/PlannedCheck"
+                    },
+                    "type": "array"
+                },
+                "principle_summaries": {
+                    "items": {
+                        "$ref": "#/$defs/PrincipleSummary"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "record_type": {
+                    "const": "assessment",
+                    "type": "string"
+                },
+                "recorded_at": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "rubric": {
+                    "type": "string"
+                },
+                "schema_version": {
+                    "const": "0.1.0",
+                    "type": "string"
+                },
+                "started_at": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "status": {
+                    "$ref": "#/$defs/RecordStatus"
+                },
+                "supersedes": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "record_type",
+                "schema_version",
+                "object",
+                "rubric",
+                "assessor",
+                "status",
+                "conditions",
+                "plan",
+                "recorded_at"
+            ],
+            "title": "Assessment",
+            "type": "object"
+        },
+        "AssessmentConditions": {
+            "additionalProperties": false,
+            "description": "Resources and authorization available, separately from comprehensiveness.",
+            "properties": {
+                "access_context": {
+                    "type": "string"
+                },
+                "allowed_actions": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "assistance": {
+                    "$ref": "#/$defs/Assistance"
+                },
+                "environment": {
+                    "type": "string"
+                },
+                "limits": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "assistance",
+                "allowed_actions",
+                "limits",
+                "access_context",
+                "environment"
+            ],
+            "title": "AssessmentConditions",
+            "type": "object"
+        },
+        "Assistance": {
+            "description": "",
+            "enum": [
+                "autonomous",
+                "available",
+                "collaborative"
+            ],
+            "title": "Assistance",
+            "type": "string"
+        },
+        "Barrier": {
+            "additionalProperties": false,
+            "description": "Why an activity was blocked; this does not imply a universal artifact failure.",
+            "properties": {
+                "detail": {
+                    "type": "string"
+                },
+                "kind": {
+                    "$ref": "#/$defs/BarrierKind"
+                },
+                "next_action": {
+                    "type": "string"
+                },
+                "user_help_needed": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "kind",
+                "detail",
+                "next_action",
+                "user_help_needed"
+            ],
+            "title": "Barrier",
+            "type": "object"
+        },
+        "BarrierKind": {
+            "description": "",
+            "enum": [
+                "access",
+                "unavailable_resource",
+                "compute",
+                "time",
+                "environment",
+                "ambiguous_instructions",
+                "other"
+            ],
+            "title": "BarrierKind",
+            "type": "string"
+        },
+        "Criterion": {
+            "additionalProperties": false,
+            "description": "Observable use-case criterion, optionally mapped to canonical checklist items.",
+            "properties": {
+                "category": {
+                    "$ref": "#/$defs/PrincipleCategory"
+                },
+                "checklist_items": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "question": {
+                    "type": "string"
+                },
+                "rationale": {
+                    "type": "string"
+                },
+                "required_activities": {
+                    "items": {
+                        "$ref": "#/$defs/Activity"
+                    },
+                    "type": "array"
+                },
+                "target": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "category",
+                "question",
+                "target",
+                "required_activities",
+                "rationale"
+            ],
+            "title": "Criterion",
+            "type": "object"
+        },
+        "Direction": {
+            "description": "",
+            "enum": [
+                "maximize",
+                "balance",
+                "preserve"
+            ],
+            "title": "Direction",
+            "type": "string"
+        },
+        "Disposition": {
+            "description": "",
+            "enum": [
+                "agree",
+                "disagree",
+                "needs_evidence"
+            ],
+            "title": "Disposition",
+            "type": "string"
+        },
+        "Evidence": {
+            "additionalProperties": false,
+            "description": "Inspectable evidence supporting an observation, not an instruction to execute.",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "uri": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "uri",
+                "description"
+            ],
+            "title": "Evidence",
+            "type": "object"
+        },
+        "Judgment": {
+            "additionalProperties": false,
+            "description": "Evidence-bounded conclusion about a criterion.",
+            "properties": {
+                "criterion": {
+                    "type": "string"
+                },
+                "observations": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "rationale": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/$defs/JudgmentStatus"
+                }
+            },
+            "required": [
+                "criterion",
+                "status",
+                "rationale",
+                "observations"
+            ],
+            "title": "Judgment",
+            "type": "object"
+        },
+        "JudgmentStatus": {
+            "description": "",
+            "enum": [
+                "demonstrated",
+                "partial",
+                "not_demonstrated",
+                "unknown",
+                "not_applicable"
+            ],
+            "title": "JudgmentStatus",
+            "type": "string"
+        },
+        "ObjectRecord": {
+            "additionalProperties": false,
+            "description": "An assessed object snapshot with a declared boundary.",
+            "properties": {
+                "boundary": {
+                    "type": "string"
+                },
+                "captured_at": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "components": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "record_type": {
+                    "const": "object",
+                    "type": "string"
+                },
+                "schema_version": {
+                    "const": "0.1.0",
+                    "type": "string"
+                },
+                "sources": {
+                    "items": {
+                        "$ref": "#/$defs/Source"
+                    },
+                    "type": "array"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "use_case": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "record_type",
+                "schema_version",
+                "use_case",
+                "title",
+                "kind",
+                "boundary",
+                "sources",
+                "captured_at"
+            ],
+            "title": "ObjectRecord",
+            "type": "object"
+        },
+        "Observation": {
+            "additionalProperties": false,
+            "description": "What happened for one activity; completed need not mean a successful result.",
+            "properties": {
+                "activity": {
+                    "$ref": "#/$defs/Activity"
+                },
+                "barrier": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Barrier"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "compute_description": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "criterion": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "elapsed_seconds": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "evidence": {
+                    "items": {
+                        "$ref": "#/$defs/Evidence"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/$defs/ObservationStatus"
+                }
+            },
+            "required": [
+                "id",
+                "criterion",
+                "activity",
+                "status",
+                "description"
+            ],
+            "title": "Observation",
+            "type": "object"
+        },
+        "ObservationStatus": {
+            "description": "",
+            "enum": [
+                "completed",
+                "blocked",
+                "not_attempted"
+            ],
+            "title": "ObservationStatus",
+            "type": "string"
+        },
+        "Origin": {
+            "description": "",
+            "enum": [
+                "user",
+                "assessor",
+                "jointly"
+            ],
+            "title": "Origin",
+            "type": "string"
+        },
+        "PlannedCheck": {
+            "additionalProperties": false,
+            "description": "Chosen activities for a criterion. Required rubric activities must be included.",
+            "properties": {
+                "activities": {
+                    "items": {
+                        "$ref": "#/$defs/Activity"
+                    },
+                    "type": "array"
+                },
+                "criterion": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "criterion",
+                "activities"
+            ],
+            "title": "PlannedCheck",
+            "type": "object"
+        },
+        "Principle": {
+            "additionalProperties": false,
+            "description": "A single STAMPED principle.",
+            "properties": {
+                "category": {
+                    "$ref": "#/$defs/PrincipleCategory",
+                    "description": "High-level STAMPED category this principle belongs to."
+                },
+                "code": {
+                    "description": "Canonical short identifier for the principle, consisting of a single capital letter (category) followed by a period and a positive integer (ordinal within the category), e.g., \"S.1\".",
+                    "pattern": "^[A-Z]\\.[1-9][0-9]*$",
+                    "type": "string"
+                },
+                "level": {
+                    "$ref": "#/$defs/RequirementLevel",
+                    "description": "RFC 2119 requirement level of the principle."
+                },
+                "statement": {
+                    "description": "Normative statement of the principle.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "code",
+                "category",
+                "level",
+                "statement"
+            ],
+            "title": "Principle",
+            "type": "object"
+        },
+        "PrincipleAim": {
+            "additionalProperties": false,
+            "description": "Use-case priorities do not change normative STAMPED requirements.",
+            "properties": {
+                "category": {
+                    "$ref": "#/$defs/PrincipleCategory"
+                },
+                "direction": {
+                    "$ref": "#/$defs/Direction"
+                },
+                "priority": {
+                    "$ref": "#/$defs/Priority"
+                },
+                "rationale": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "category",
+                "priority",
+                "direction",
+                "rationale"
+            ],
+            "title": "PrincipleAim",
+            "type": "object"
+        },
+        "PrincipleCategory": {
+            "description": "High-level STAMPED principle categories.",
+            "enum": [
+                "self_contained",
+                "tracked",
+                "actionable",
+                "modular",
+                "portable",
+                "ephemeral",
+                "distributable"
+            ],
+            "title": "PrincipleCategory",
+            "type": "string"
+        },
+        "PrincipleSet": {
+            "additionalProperties": false,
+            "description": "The full, versioned set of STAMPED principles.",
+            "properties": {
+                "principles": {
+                    "description": "The principles in this set.",
+                    "items": {
+                        "$ref": "#/$defs/Principle"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "version": {
+                    "description": "Version string for this set of principles (e.g., \"1.0.0\").",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "principles"
+            ],
+            "title": "PrincipleSet",
+            "type": "object"
+        },
+        "PrincipleSummary": {
+            "additionalProperties": false,
+            "description": "Interpretation for one principle in the stated use case.",
+            "properties": {
+                "category": {
+                    "$ref": "#/$defs/PrincipleCategory"
+                },
+                "summary": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "category",
+                "summary"
+            ],
+            "title": "PrincipleSummary",
+            "type": "object"
+        },
+        "Priority": {
+            "description": "",
+            "enum": [
+                "essential",
+                "important",
+                "supporting",
+                "out_of_scope"
+            ],
+            "title": "Priority",
+            "type": "string"
+        },
+        "RecordStatus": {
+            "description": "",
+            "enum": [
+                "in_progress",
+                "finalized"
+            ],
+            "title": "RecordStatus",
+            "type": "string"
+        },
+        "RequirementLevel": {
+            "description": "RFC 2119 requirement levels. Negated forms (MUST NOT / SHOULD NOT) are represented using `must` / `should`; negation is expressed in the principle statement text.",
+            "enum": [
+                "must",
+                "should",
+                "may"
+            ],
+            "title": "RequirementLevel",
+            "type": "string"
+        },
+        "Review": {
+            "additionalProperties": false,
+            "description": "Separate review tied to the exact semantic digest of an assessment.",
+            "properties": {
+                "assessment": {
+                    "type": "string"
+                },
+                "assessment_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                },
+                "created_at": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "decisions": {
+                    "items": {
+                        "$ref": "#/$defs/ReviewDecision"
+                    },
+                    "type": "array"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "record_type": {
+                    "const": "review",
+                    "type": "string"
+                },
+                "reviewer": {
+                    "$ref": "#/$defs/Actor"
+                },
+                "schema_version": {
+                    "const": "0.1.0",
+                    "type": "string"
+                },
+                "supersedes": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "record_type",
+                "schema_version",
+                "assessment",
+                "assessment_sha256",
+                "reviewer",
+                "created_at",
+                "decisions"
+            ],
+            "title": "Review",
+            "type": "object"
+        },
+        "ReviewDecision": {
+            "additionalProperties": false,
+            "description": "A judgment on a specific criterion; original assessment remains unchanged.",
+            "properties": {
+                "criterion": {
+                    "type": "string"
+                },
+                "disposition": {
+                    "$ref": "#/$defs/Disposition"
+                },
+                "rationale": {
+                    "type": "string"
+                },
+                "suggested_status": {
+                    "$ref": "#/$defs/JudgmentStatus"
+                }
+            },
+            "required": [
+                "criterion",
+                "disposition",
+                "rationale"
+            ],
+            "title": "ReviewDecision",
+            "type": "object"
+        },
+        "Rubric": {
+            "additionalProperties": false,
+            "description": "Versioned goals and observable criteria; checklist is a guide, not exhaustive.",
+            "properties": {
+                "criteria": {
+                    "items": {
+                        "$ref": "#/$defs/Criterion"
+                    },
+                    "type": "array"
+                },
+                "decided_by": {
+                    "$ref": "#/$defs/Origin"
+                },
+                "decision_rationale": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "principles": {
+                    "items": {
+                        "$ref": "#/$defs/PrincipleAim"
+                    },
+                    "type": "array"
+                },
+                "record_type": {
+                    "const": "rubric",
+                    "type": "string"
+                },
+                "reference_bundle": {
+                    "type": "string"
+                },
+                "schema_version": {
+                    "const": "0.1.0",
+                    "type": "string"
+                },
+                "use_case": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "record_type",
+                "schema_version",
+                "use_case",
+                "version",
+                "reference_bundle",
+                "decided_by",
+                "decision_rationale",
+                "principles",
+                "criteria"
+            ],
+            "title": "Rubric",
+            "type": "object"
+        },
+        "Source": {
+            "additionalProperties": false,
+            "description": "Recoverable source identity; revision or digest required by semantic validation.",
+            "properties": {
+                "path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "revision": {
+                    "description": "Full Git commit hash; use sha256 for other snapshot mechanisms.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "role": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url",
+                "role"
+            ],
+            "title": "Source",
+            "type": "object"
+        },
+        "UseCase": {
+            "additionalProperties": false,
+            "description": "The intended use and audience; separate from any specific artifact revision.",
+            "properties": {
+                "audience": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "objective": {
+                    "type": "string"
+                },
+                "record_type": {
+                    "const": "use_case",
+                    "type": "string"
+                },
+                "schema_version": {
+                    "const": "0.1.0",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "record_type",
+                "schema_version",
+                "title",
+                "objective",
+                "audience",
+                "description"
+            ],
+            "title": "UseCase",
+            "type": "object"
+        }
+    },
+    "$id": "https://stamped-principles.org/assessment",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": false,
+    "description": "An assessed object snapshot with a declared boundary.",
+    "metamodel_version": "1.11.0",
+    "properties": {
+        "boundary": {
+            "type": "string"
+        },
+        "captured_at": {
+            "format": "date-time",
+            "type": "string"
+        },
+        "components": {
+            "items": {
+                "type": "string"
+            },
+            "type": [
+                "array",
+                "null"
+            ]
+        },
+        "id": {
+            "type": "string"
+        },
+        "kind": {
+            "type": "string"
+        },
+        "record_type": {
+            "const": "object",
+            "type": "string"
+        },
+        "schema_version": {
+            "const": "0.1.0",
+            "type": "string"
+        },
+        "sources": {
+            "items": {
+                "$ref": "#/$defs/Source"
+            },
+            "type": "array"
+        },
+        "title": {
+            "type": "string"
+        },
+        "use_case": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "id",
+        "record_type",
+        "schema_version",
+        "use_case",
+        "title",
+        "kind",
+        "boundary",
+        "sources",
+        "captured_at"
+    ],
+    "title": "stamped_assessment",
+    "type": "object",
+    "version": "0.1.0"
+}

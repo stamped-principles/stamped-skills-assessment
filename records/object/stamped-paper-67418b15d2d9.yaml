@@ -1,0 +1,13 @@
+id: stamped-paper-67418b15d2d9
+record_type: object
+schema_version: 0.1.0
+use_case: paper-authoring
+title: STAMPED manuscript repository
+kind: manuscript
+boundary: Git tree at the specified revision, including referenced and annexed build inputs; untracked
+  local drafts excluded.
+sources:
+- url: https://github.com/stamped-principles/stamped-paper
+  revision: 67418b15d2d9a81fc15cccbf48b07c1dc37f6c44
+  role: assessed Git tree
+captured_at: '2026-09-25T21:17:22.798091+00:00'

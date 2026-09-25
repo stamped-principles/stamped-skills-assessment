@@ -1,0 +1,32 @@
+{
+  "id": "stamped-2026-09-25",
+  "principles_version": "0.2.0",
+  "checklist_version": "0.3.1",
+  "checklist_schema_version": "0.2.0",
+  "sources": [
+    {
+      "path": "principles/stamped-principles-schema.yaml",
+      "url": "https://raw.githubusercontent.com/stamped-principles/stamped-principles-schema/2c7c3a7442b2f63649ff70a1893db7557ac19461/stamped-principles-schema.yaml",
+      "revision": "2c7c3a7442b2f63649ff70a1893db7557ac19461",
+      "sha256": "cd7fe67a5badf834af15890d963d8ae3192c70b7ba3422faae598ce85a2df52d"
+    },
+    {
+      "path": "principles/stamped-principles.json",
+      "url": "https://raw.githubusercontent.com/stamped-principles/stamped-principles-schema/2c7c3a7442b2f63649ff70a1893db7557ac19461/stamped-principles.json",
+      "revision": "2c7c3a7442b2f63649ff70a1893db7557ac19461",
+      "sha256": "f0f4abe3e6ae9c41ccb58e3fe731898d902fda6ac9defc0ba948d22a88fdd580"
+    },
+    {
+      "path": "checklist/stamped-checklist-schema.yaml",
+      "url": "https://raw.githubusercontent.com/stamped-principles/stamped-checklist-schema/af259bad237fa57b856417db8dba45a1b283a527/stamped-checklist-schema.yaml",
+      "revision": "af259bad237fa57b856417db8dba45a1b283a527",
+      "sha256": "6c4d481612bf68cbb5198c24b74bcbccc6e9d408a4dd22d1a49aa17a4c83621e"
+    },
+    {
+      "path": "checklist/stamped-checklist.json",
+      "url": "https://raw.githubusercontent.com/stamped-principles/stamped-checklist-schema/af259bad237fa57b856417db8dba45a1b283a527/stamped-checklist.json",
+      "revision": "af259bad237fa57b856417db8dba45a1b283a527",
+      "sha256": "da2eb88ed49dff64f098ad92200dec81c1b4404cc2d3ba1e1e1404d0e10e7bba"
+    }
+  ]
+}

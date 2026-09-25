@@ -1,0 +1,13 @@
+version = 1
+[[annotations]]
+path = ["src/stamped_assessment/*.py", "tests/**", "tools/**", "pyproject.toml", "pixi.*", ".github/**", ".gitignore", ".pre-commit-config.yaml"]
+SPDX-FileCopyrightText = "2026 STAMPED assessment contributors"
+SPDX-License-Identifier = "MIT"
+[[annotations]]
+path = ["README.md", "AGENTS.md", "docs/**", "records/**", "src/stamped_assessment/data/schemas/**", "src/stamped_assessment/data/generated/**"]
+SPDX-FileCopyrightText = "2026 STAMPED assessment contributors"
+SPDX-License-Identifier = "CC-BY-4.0"
+[[annotations]]
+path = ["src/stamped_assessment/data/upstream/**"]
+SPDX-FileCopyrightText = "STAMPED Principles authors and contributors"
+SPDX-License-Identifier = "CC-BY-4.0"

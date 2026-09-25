@@ -1,0 +1,18 @@
+name: Validate assessment model and records
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install pinned Pixi
+        run: |
+          curl -fsSL https://pixi.sh/install.sh | PIXI_VERSION=v0.81.0 bash
+          echo "$HOME/.pixi/bin" >> "$GITHUB_PATH"
+      - run: pixi install --locked
+      - run: pixi run generate
+      - run: git diff --exit-code -- src/stamped_assessment/data/generated
+      - run: pixi run test
+      - run: pixi run validate
