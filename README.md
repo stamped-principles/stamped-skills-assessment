@@ -37,6 +37,7 @@ The checklist is a guide; a rubric can add criteria that are important for its u
 
 See [the design](docs/design.md), [contribution workflow](docs/contributing-assessments.md), and [development notes](docs/development.md).
 The [implementation report](docs/implementation-report.md) records decisions, concerns, and next experiments.
+The [automation evidence lessons](docs/automation-evidence.md) apply the completion-hook work to evidence attribution, collection coverage, and an assessor evaluation pilot.
 
 ## Initial evidence
 
